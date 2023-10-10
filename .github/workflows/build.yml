@@ -14,4 +14,17 @@ jobs:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - name: Check out repository code
         uses: actions/checkout@v4
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_HOST}}
+          port: ${{secrets.SSH_HOST_PORT}}
+          username: ${{secrets.SSH_HOST_USER}}
+          password: ${{secrets.SSH_HOST_PASSWORD}}
+          script: |
+            ls -a
+            echo "From server vps"
+
+      - name: Display a message on the runner
+        run: echo "🖥️ The workflow is now ready to test your code on the runner."
